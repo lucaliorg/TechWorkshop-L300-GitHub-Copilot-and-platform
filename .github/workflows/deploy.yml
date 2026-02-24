@@ -5,6 +5,11 @@ on:
     branches: [main, dev]
   workflow_dispatch:
 
+
+permissions:
+  id-token: write   # REQUIRED for OIDC
+  contents: read    # REQUIRED to clone the repo
+
 env:
   IMAGE_NAME: zava-storefront
 
