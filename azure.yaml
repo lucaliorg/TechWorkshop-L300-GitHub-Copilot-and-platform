@@ -1,0 +1,11 @@
+name: zava-storefront
+metadata:
+  template: azd-init
+
+services:
+  web:
+    project: ./src
+    language: dotnet
+    host: appservice
+    docker:
+      path: ./src/Dockerfile
