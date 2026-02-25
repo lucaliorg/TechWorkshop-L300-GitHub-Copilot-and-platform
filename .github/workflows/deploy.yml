@@ -33,3 +33,12 @@ jobs:
             --name ${{ vars.APP_NAME }} \
             --resource-group ${{ vars.RESOURCE_GROUP }} \
             --container-image-name ${{ vars.ACR_NAME }}.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Set App Service configuration
+        run: |
+          az webapp config appsettings set \
+            --name ${{ vars.APP_NAME }} \
+            --resource-group ${{ vars.RESOURCE_GROUP }} \
+            --settings \
+              AzureAI__Endpoint=${{ vars.AZURE_AI_ENDPOINT }} \
+              AzureAI__DeploymentName=${{ vars.AZURE_AI_DEPLOYMENT_NAME }}
