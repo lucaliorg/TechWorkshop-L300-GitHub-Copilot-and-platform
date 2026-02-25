@@ -1,11 +1,16 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-COPY *.csproj ./
-RUN dotnet restore
-COPY . ./
-RUN dotnet publish -c Release -o out
+ENV ASPNETCORE_URLS=http://+:8080
+EXPOSE 8080
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+COPY ["ZavaStorefront.csproj", "./"]
+RUN dotnet restore
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
+
+FROM base AS final
 WORKDIR /app
-COPY --from=build /app/out ./
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "ZavaStorefront.dll"]
